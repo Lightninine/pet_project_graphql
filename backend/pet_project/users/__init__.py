@@ -1,0 +1,1 @@
+default_app_config = 'gti_stations.apps.UsersConfig'

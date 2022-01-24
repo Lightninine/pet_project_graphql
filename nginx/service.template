@@ -1,0 +1,33 @@
+upstream django_backend {
+    server daphne:8000;
+}
+server {
+    listen ${NGINX_PORT};
+    server_name ${NGINX_HOST};
+    charset utf-8;
+    client_max_body_size 300M;
+    proxy_read_timeout 300;
+    proxy_connect_timeout 300;
+    proxy_send_timeout 300;
+
+    location /admin {
+        proxy_pass http://django_backend;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+
+    location /static/admin {
+        proxy_pass http://django_backend;
+    }
+    location /static/graphene_django {
+        proxy_pass http://django_backend;
+    }
+    location /static/grappelli {
+        proxy_pass http://django_backend;
+    }
+    location /media/ {
+        alias /backend/master/media/;
+        internal;
+    }
+}
