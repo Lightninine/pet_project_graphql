@@ -75,5 +75,36 @@ LOGGING = {  # pragma: no cover
     },
 }
 
+GRAPHENE = {
+    "SCHEMA": "pet_project.schema.schema",
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+}
+
+AUTHENTICATION_BACKENDS = [
+    "graphql_auth.backends.GraphQLAuthBackend",
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+
+    # optional
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+    ],
+}
+
+GRAPHQL_AUTH = {
+    'LOGIN_ALLOWED_FIELDS': ['email', 'username'],
+    'SEND_ACTIVATION_EMAIL': False
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 REDIS_HOST = os.environ.get('REDIS_HOST')  # pragma: no cover
 REDIS_PORT = '6379'  # pragma: no cover
