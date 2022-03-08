@@ -24,10 +24,12 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'memoize',
+    "graphql_auth",
+    'channels',
+    'channels_redis',
     "graphene_django",
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'django_cleanup.apps.CleanupConfig',
-    "graphql_auth",
     'django_filters'
 ]
 

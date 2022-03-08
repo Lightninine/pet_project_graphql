@@ -38,6 +38,20 @@ CACHES = {  # pragma: no cover
     }
 }
 
+REDIS_HOST = os.environ.get('REDIS_HOST')  # pragma: no cover
+REDIS_PORT = '6379'  # pragma: no cover
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(REDIS_HOST, REDIS_PORT), ],
+            'capacity': 3000,
+            'expiry': 5,
+        }
+    }
+}
+
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"  # pragma: no cover
 SESSION_CACHE_ALIAS = "default"  # pragma: no cover
 
@@ -80,6 +94,7 @@ GRAPHENE = {
     'MIDDLEWARE': [
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ],
+    "SUBSCRIPTION_PATH": "/ws/graphql/"
 }
 
 AUTHENTICATION_BACKENDS = [
@@ -97,6 +112,8 @@ GRAPHQL_JWT = {
         "graphql_auth.mutations.VerifyAccount",
         "graphql_auth.mutations.ObtainJSONWebToken",
     ],
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=14),
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=5)
 }
 
 GRAPHQL_AUTH = {
@@ -105,6 +122,3 @@ GRAPHQL_AUTH = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-REDIS_HOST = os.environ.get('REDIS_HOST')  # pragma: no cover
-REDIS_PORT = '6379'  # pragma: no cover
